@@ -3,7 +3,7 @@ struct SystemOverview : PanelItem {
   auto show() -> void override;
   auto hide() -> void override;
   auto refresh() -> void override;
-  auto scan(ares::Node::Object node, uint depth = 0) -> void;
+  auto scan(velvet::Node::Object node, uint depth = 0) -> void;
 
   Label header{this, Size{~0, 0}};
   ListView nodeList{this, Size{~0, ~0}};

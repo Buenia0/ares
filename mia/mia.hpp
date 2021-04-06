@@ -8,8 +8,8 @@ using namespace nall;
 #include <hiro/hiro.hpp>
 using namespace hiro;
 
-#include <ares/information.hpp>
-#include <ares/resource/resource.hpp>
+#include <velvet/information.hpp>
+#include <velvet/resource/resource.hpp>
 
 #include "resource/resource.hpp"
 

@@ -20,21 +20,21 @@ auto SystemOverview::refresh() -> void {
   nodeList.reset();
   auto manifest = BML::unserialize(file::read({location, "manifest.bml"}));
   header.setText(manifest["system"].text());
-  if(auto root = ares::Node::unserialize(file::read({location, "settings.bml"}))) {
+  if(auto root = velvet::Node::unserialize(file::read({location, "settings.bml"}))) {
     for(auto& node : *root) scan(node);
   }
 }
 
-auto SystemOverview::scan(ares::Node::Object node, uint depth) -> void {
-  if(node->is<ares::Node::Input>()) return;
-  if(node->is<ares::Node::Screen>()) return;
-  if(node->is<ares::Node::Component>() && !settings.interface.advancedMode) return;
+auto SystemOverview::scan(velvet::Node::Object node, uint depth) -> void {
+  if(node->is<velvet::Node::Input>()) return;
+  if(node->is<velvet::Node::Screen>()) return;
+  if(node->is<velvet::Node::Component>() && !settings.interface.advancedMode) return;
 
   ListViewItem item{&nodeList};
   string name;
   for(uint n : range(depth)) name.append("   ");
   name.append(node->attribute("name") ? node->attribute("name") : node->name());
-  if(auto setting = node->cast<ares::Node::Setting>()) {
+  if(auto setting = node->cast<velvet::Node::Setting>()) {
     name.append(": ", setting->readValue());
   }
 

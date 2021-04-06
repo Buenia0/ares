@@ -136,15 +136,15 @@ Presentation::Presentation() {
 
   helpMenu.setText("Help");
   aboutAction.setText("About lucia ...").setIcon(Icon::Prompt::Question).onActivate([&] {
-    image logo{Resource::Ares::Logo};
+    image logo{Resource::Velvet::Logo};
     logo.shrink();
     AboutDialog()
     .setLogo(logo)
     .setDescription("lucia — a simplified multi-system emulator")
-    .setVersion(ares::Version)
-    .setCopyright(ares::Copyright)
-    .setLicense(ares::License, ares::LicenseURI)
-    .setWebsite(ares::Website, ares::WebsiteURI)
+    .setVersion(velvet::Version)
+    .setCopyright(velvet::Copyright)
+    .setLicense(velvet::License, velvet::LicenseURI)
+    // .setWebsite(velvet::Website, velvet::WebsiteURI)
     .setAlignment(presentation)
     .show();
   });
@@ -162,7 +162,7 @@ Presentation::Presentation() {
     viewport.doDrop(filenames);
   });
 
-  image icon{Resource::Ares::Icon};
+  image icon{Resource::Velvet::Icon};
   icon.alphaBlend(0x000000);
   iconCanvas.setCollapsible().setIcon(icon).setDroppable().onDrop([&](auto filenames) {
     viewport.doDrop(filenames);
@@ -185,7 +185,7 @@ Presentation::Presentation() {
   });
 
   resizeWindow();
-  setTitle({"lucia v", ares::Version});
+  setTitle({"lucia v", velvet::Version});
   setBackgroundColor({0, 0, 0});
   setAlignment(Alignment::Center);
   setVisible();
@@ -387,7 +387,7 @@ auto Presentation::loadEmulator() -> void {
 }
 
 auto Presentation::unloadEmulator(bool reloading) -> void {
-  setTitle({"lucia v", ares::Version});
+  setTitle({"lucia v", velvet::Version});
 
   systemMenu.setVisible(false);
   systemMenu.reset();

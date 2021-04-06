@@ -5,6 +5,6 @@ SystemMenu::SystemMenu(MenuBar* parent) : Menu(parent) {
     emulator.unload();
     program.showPanels();
     program.setOverviewMode();
-    program.setTitle({"luna v", ares::Version});
+    program.setTitle({"luna v", velvet::Version});
   });
 }

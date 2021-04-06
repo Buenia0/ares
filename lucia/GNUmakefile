@@ -2,7 +2,7 @@ name := lucia
 build := performance
 openmp := false
 local := true
-flags += -I. -I.. -I../ares -DMIA_LIBRARY
+flags += -I. -I.. -I../velvet -DMIA_LIBRARY
 
 ifeq ($(platform),local)
   flags += -march=native
@@ -24,8 +24,8 @@ include $(hiro.path)/GNUmakefile
 profile := performance
 cores := fc sfc sg ms md pce msx gb gba ws ngp
 
-ares.path := ../ares
-include $(ares.path)/GNUmakefile
+velvet.path := ../velvet
+include $(velvet.path)/GNUmakefile
 
 mia.path := ../mia
 
@@ -50,8 +50,8 @@ $(object.path)/lucia-presentation.o: $(lucia.path)/presentation/presentation.cpp
 $(object.path)/lucia-settings.o: $(lucia.path)/settings/settings.cpp
 $(object.path)/lucia-tools.o: $(lucia.path)/tools/tools.cpp
 
-all.objects := $(libco.objects) $(ruby.objects) $(hiro.objects) $(ares.objects) $(mia.objects) $(lucia.objects)
-all.options := $(libco.options) $(ruby.options) $(hiro.options) $(ares.options) $(mia.options) $(lucia.options) $(options)
+all.objects := $(libco.objects) $(ruby.objects) $(hiro.objects) $(velvet.objects) $(mia.objects) $(lucia.objects)
+all.options := $(libco.options) $(ruby.options) $(hiro.options) $(velvet.options) $(mia.options) $(lucia.options) $(options)
 
 all: $(all.objects)
 	$(info Linking $(output.path)/$(name) ...)

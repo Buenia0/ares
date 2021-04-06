@@ -27,9 +27,9 @@ auto MemoryEditor::construct() -> void {
 
 auto MemoryEditor::reload() -> void {
   memoryList.reset();
-  for(auto memory : ares::Node::enumerate<ares::Node::Memory>(emulator->root)) {
+  for(auto memory : velvet::Node::enumerate<velvet::Node::Memory>(emulator->root)) {
     ComboButtonItem item{&memoryList};
-    item.setAttribute<ares::Node::Memory>("node", memory);
+    item.setAttribute<velvet::Node::Memory>("node", memory);
     item.setText(memory->name());
   }
   gotoAddress.setText();
@@ -52,7 +52,7 @@ auto MemoryEditor::liveRefresh() -> void {
 
 auto MemoryEditor::eventChange() -> void {
   if(auto item = memoryList.selected()) {
-    if(auto memory = item.attribute<ares::Node::Memory>("node")) {
+    if(auto memory = item.attribute<velvet::Node::Memory>("node")) {
       memoryEditor.setLength(memory->size());
       memoryEditor.onRead([=](uint address) -> uint8_t {
         return memory->read(address);
@@ -72,7 +72,7 @@ auto MemoryEditor::eventChange() -> void {
 
 auto MemoryEditor::eventExport() -> void {
   if(auto item = memoryList.selected()) {
-    if(auto memory = item.attribute<ares::Node::Memory>("node")) {
+    if(auto memory = item.attribute<velvet::Node::Memory>("node")) {
       auto identifier = memory->name().downcase().replace(" ", "-");
       auto datetime = chrono::local::datetime().replace("-", "").replace(":", "").replace(" ", "-");
       auto location = emulator->locate({Location::notsuffix(emulator->game.location), "-", identifier, "-", datetime, ".bin"}, ".bin", settings.paths.debugging);

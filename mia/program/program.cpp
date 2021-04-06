@@ -27,16 +27,16 @@ ProgramWindow::ProgramWindow() {
 
   helpMenu.setText("Help");
   aboutAction.setIcon(Icon::Prompt::Question).setText("About mia ...").onActivate([&] {
-    image logo{Resource::Ares::Logo};
+    image logo{Resource::Velvet::Logo};
     logo.shrink();
     AboutDialog()
     .setName("mia")
     .setLogo(logo)
     .setDescription("mia — a game analyzer and converter")
-    .setVersion(ares::Version)
-    .setCopyright(ares::Copyright)
-    .setLicense(ares::License, ares::LicenseURI)
-    .setWebsite(ares::Website, ares::WebsiteURI)
+    .setVersion(velvet::Version)
+    .setCopyright(velvet::Copyright)
+    // .setLicense(velvet::License, velvet::LicenseURI)
+    // .setWebsite(velvet::Website, velvet::WebsiteURI)
     .setAlignment(*this)
     .show();
   });
@@ -59,7 +59,7 @@ ProgramWindow::ProgramWindow() {
   show(home);
 
   onClose(&Application::quit);
-  setTitle({"mia v", ares::Version});
+  setTitle({"mia v", velvet::Version});
   setSize({800_sx, 545_sy});
   setAlignment(Alignment::Center);
   setVisible();

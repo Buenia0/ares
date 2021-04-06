@@ -39,11 +39,11 @@ auto InputAxis::value() -> int16_t {
 
 //
 
-auto InputManager::bind(maybe<ares::Node::Object> newRoot) -> void {
+auto InputManager::bind(maybe<velvet::Node::Object> newRoot) -> void {
   if(newRoot) root = newRoot();
   if(!root) return;
 
-  for(auto& input : root->find<ares::Node::Input>()) {
+  for(auto& input : root->find<velvet::Node::Input>()) {
     //not strictly necessary; but release any shared_pointer instances to free up the allocated memory
     input->setAttribute<shared_pointer<InputButton>>("instance");
 
@@ -60,7 +60,7 @@ auto InputManager::bind(maybe<ares::Node::Object> newRoot) -> void {
       if(vendorID != device->vendorID()) continue;
       if(productID != device->productID()) continue;
 
-      if(input->cast<ares::Node::Button>()) {
+      if(input->cast<velvet::Node::Button>()) {
         auto instance = shared_pointer_make<InputButton>();
         instance->device = device;
         instance->groupID = input->attribute("groupID").natural();
@@ -71,7 +71,7 @@ auto InputManager::bind(maybe<ares::Node::Object> newRoot) -> void {
         break;
       }
 
-      if(input->cast<ares::Node::Axis>()) {
+      if(input->cast<velvet::Node::Axis>()) {
         auto instance = shared_pointer_make<InputAxis>();
         instance->device = device;
         instance->groupID = input->attribute("groupID").natural();

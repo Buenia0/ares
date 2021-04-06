@@ -3,19 +3,19 @@
 struct NeoGeoPocket : Emulator {
   NeoGeoPocket();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct NeoGeoPocketColor : Emulator {
   NeoGeoPocketColor();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 NeoGeoPocket::NeoGeoPocket() {
-  interface = new ares::NeoGeoPocket::NeoGeoPocketInterface;
+  interface = new velvet::NeoGeoPocket::NeoGeoPocketInterface;
   medium = mia::medium("Neo Geo Pocket");
   manufacturer = "SNK";
   name = "Neo Geo Pocket";
@@ -29,19 +29,19 @@ auto NeoGeoPocket::load() -> bool {
     return false;
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto fastBoot = root->find<ares::Node::Boolean>("Fast Boot")) {
+  if(auto fastBoot = root->find<velvet::Node::Boolean>("Fast Boot")) {
     fastBoot->setValue(settings.general.fastBoot);
   }
 
   return true;
 }
 
-auto NeoGeoPocket::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto NeoGeoPocket::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "bios.rom") {
@@ -60,7 +60,7 @@ auto NeoGeoPocket::open(ares::Node::Object node, string name, vfs::file::mode mo
   return {};
 }
 
-auto NeoGeoPocket::input(ares::Node::Input node) -> void {
+auto NeoGeoPocket::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -73,14 +73,14 @@ auto NeoGeoPocket::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 NeoGeoPocketColor::NeoGeoPocketColor() {
-  interface = new ares::NeoGeoPocket::NeoGeoPocketColorInterface;
+  interface = new velvet::NeoGeoPocket::NeoGeoPocketColorInterface;
   medium = mia::medium("Neo Geo Pocket Color");
   manufacturer = "SNK";
   name = "Neo Geo Pocket Color";
@@ -94,19 +94,19 @@ auto NeoGeoPocketColor::load() -> bool {
     return false;
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto fastBoot = root->find<ares::Node::Boolean>("Fast Boot")) {
+  if(auto fastBoot = root->find<velvet::Node::Boolean>("Fast Boot")) {
     fastBoot->setValue(settings.general.fastBoot);
   }
 
   return true;
 }
 
-auto NeoGeoPocketColor::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto NeoGeoPocketColor::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "bios.rom") {
@@ -125,7 +125,7 @@ auto NeoGeoPocketColor::open(ares::Node::Object node, string name, vfs::file::mo
   return {};
 }
 
-auto NeoGeoPocketColor::input(ares::Node::Input node) -> void {
+auto NeoGeoPocketColor::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -138,7 +138,7 @@ auto NeoGeoPocketColor::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

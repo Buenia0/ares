@@ -3,10 +3,10 @@ struct PortManager : PanelList {
   auto show() -> void override;
   auto hide() -> void override;
   auto refresh() -> void;
-  auto refresh(ares::Node::Object node) -> void;
+  auto refresh(velvet::Node::Object node) -> void;
 
   auto onChange() -> void;
 
-  ares::Node::Object root;
+  velvet::Node::Object root;
   ListView listView{this, Size{~0, ~0}};
 };

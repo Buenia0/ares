@@ -1,7 +1,7 @@
 #include "luna.hpp"
 
-shared_pointer<ares::Interface> interface;
-vector<shared_pointer<ares::Interface>> interfaces;
+shared_pointer<velvet::Interface> interface;
+vector<shared_pointer<velvet::Interface>> interfaces;
 
 namespace nall::Path {
   string settings;
@@ -60,106 +60,106 @@ auto nall::main(Arguments arguments) -> void {
   //create interfaces list in alphabetical order of interface->name() values
 
   #ifdef CORE_CV
-  interfaces.append(new ares::ColecoVision::ColecoVisionInterface);
+  interfaces.append(new velvet::ColecoVision::ColecoVisionInterface);
   #endif
 
   #ifdef CORE_FC
-  interfaces.append(new ares::Famicom::FamicomInterface);
+  interfaces.append(new velvet::Famicom::FamicomInterface);
   #endif
 
   #ifdef CORE_GB
-  interfaces.append(new ares::GameBoy::GameBoyInterface);
+  interfaces.append(new velvet::GameBoy::GameBoyInterface);
   #endif
 
   #ifdef CORE_GB
-  interfaces.append(new ares::GameBoy::GameBoyColorInterface);
+  interfaces.append(new velvet::GameBoy::GameBoyColorInterface);
   #endif
 
   #ifdef CORE_GBA
-  interfaces.append(new ares::GameBoyAdvance::GameBoyAdvanceInterface);
+  interfaces.append(new velvet::GameBoyAdvance::GameBoyAdvanceInterface);
   #endif
 
   #ifdef CORE_GBA
-  interfaces.append(new ares::GameBoyAdvance::GameBoyPlayerInterface);
+  interfaces.append(new velvet::GameBoyAdvance::GameBoyPlayerInterface);
   #endif
 
   #ifdef CORE_MD
-  interfaces.append(new ares::MegaDrive::MegaDriveInterface);
+  interfaces.append(new velvet::MegaDrive::MegaDriveInterface);
   #endif
 
   #ifdef CORE_MS
-  interfaces.append(new ares::MasterSystem::GameGearInterface);
+  interfaces.append(new velvet::MasterSystem::GameGearInterface);
   #endif
 
   #ifdef CORE_MS
-  interfaces.append(new ares::MasterSystem::MasterSystemInterface);
+  interfaces.append(new velvet::MasterSystem::MasterSystemInterface);
   #endif
 
   #ifdef CORE_MSX
-  interfaces.append(new ares::MSX::MSXInterface);
+  interfaces.append(new velvet::MSX::MSXInterface);
   #endif
 
   #ifdef CORE_MSX
-  interfaces.append(new ares::MSX::MSX2Interface);
+  interfaces.append(new velvet::MSX::MSX2Interface);
   #endif
 
   #ifdef CORE_N64
-  interfaces.append(new ares::Nintendo64::Nintendo64Interface);
+  interfaces.append(new velvet::Nintendo64::Nintendo64Interface);
   #endif
 
   #ifdef CORE_NGP
-  interfaces.append(new ares::NeoGeoPocket::NeoGeoPocketInterface);
+  interfaces.append(new velvet::NeoGeoPocket::NeoGeoPocketInterface);
   #endif
 
   #ifdef CORE_NGP
-  interfaces.append(new ares::NeoGeoPocket::NeoGeoPocketColorInterface);
+  interfaces.append(new velvet::NeoGeoPocket::NeoGeoPocketColorInterface);
   #endif
 
   #ifdef CORE_PCE
-  interfaces.append(new ares::PCEngine::PCEngineInterface);
+  interfaces.append(new velvet::PCEngine::PCEngineInterface);
   #endif
 
   #ifdef CORE_PCE
-  interfaces.append(new ares::PCEngine::PCEngineDuoInterface);
+  interfaces.append(new velvet::PCEngine::PCEngineDuoInterface);
   #endif
 
   #ifdef CORE_PS1
-  interfaces.append(new ares::PlayStation::PlayStationInterface);
+  interfaces.append(new velvet::PlayStation::PlayStationInterface);
   #endif
 
   #ifdef CORE_WS
-  interfaces.append(new ares::WonderSwan::PocketChallengeV2Interface);
+  interfaces.append(new velvet::WonderSwan::PocketChallengeV2Interface);
   #endif
 
   #ifdef CORE_SG
-  interfaces.append(new ares::SG1000::SC3000Interface);
+  interfaces.append(new velvet::SG1000::SC3000Interface);
   #endif
 
   #ifdef CORE_SG
-  interfaces.append(new ares::SG1000::SG1000Interface);
+  interfaces.append(new velvet::SG1000::SG1000Interface);
   #endif
 
   #ifdef CORE_SFC
-  interfaces.append(new ares::SuperFamicom::SuperFamicomInterface);
+  interfaces.append(new velvet::SuperFamicom::SuperFamicomInterface);
   #endif
 
   #ifdef CORE_PCE
-  interfaces.append(new ares::PCEngine::SuperGrafxInterface);
+  interfaces.append(new velvet::PCEngine::SuperGrafxInterface);
   #endif
 
   #ifdef CORE_WS
-  interfaces.append(new ares::WonderSwan::SwanCrystalInterface);
+  interfaces.append(new velvet::WonderSwan::SwanCrystalInterface);
   #endif
 
   #ifdef CORE_WS
-  interfaces.append(new ares::WonderSwan::WonderSwanInterface);
+  interfaces.append(new velvet::WonderSwan::WonderSwanInterface);
   #endif
 
   #ifdef CORE_WS
-  interfaces.append(new ares::WonderSwan::WonderSwanColorInterface);
+  interfaces.append(new velvet::WonderSwan::WonderSwanColorInterface);
   #endif
 
-  ares::platform = &emulator;
+  velvet::platform = &emulator;
 
   Instances::program.construct();
   emulator.inputUpdate();

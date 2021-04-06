@@ -3,24 +3,24 @@
 struct SuperFamicom : Emulator {
   SuperFamicom();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 SuperFamicom::SuperFamicom() {
-  interface = new ares::SuperFamicom::SuperFamicomInterface;
+  interface = new velvet::SuperFamicom::SuperFamicomInterface;
   medium = mia::medium("Super Famicom");
   manufacturer = "Nintendo";
   name = "Super Famicom";
 }
 
 auto SuperFamicom::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -28,7 +28,7 @@ auto SuperFamicom::load() -> bool {
   return true;
 }
 
-auto SuperFamicom::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto SuperFamicom::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "boards.bml") {
@@ -195,7 +195,7 @@ auto SuperFamicom::open(ares::Node::Object node, string name, vfs::file::mode mo
   return {};
 }
 
-auto SuperFamicom::input(ares::Node::Input node) -> void {
+auto SuperFamicom::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -213,7 +213,7 @@ auto SuperFamicom::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

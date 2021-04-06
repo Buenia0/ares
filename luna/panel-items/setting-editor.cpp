@@ -15,7 +15,7 @@ auto SettingEditor::hide() -> void {
   setting = {};
 }
 
-auto SettingEditor::refresh(ares::Node::Setting setting) -> void {
+auto SettingEditor::refresh(velvet::Node::Setting setting) -> void {
   if(setting) {
     this->setting = setting;  //assigning a new setting to the editor
   } else {

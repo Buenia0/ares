@@ -3,31 +3,31 @@
 struct MSX : Emulator {
   MSX();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct MSX2 : Emulator {
   MSX2();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 MSX::MSX() {
-  interface = new ares::MSX::MSXInterface;
+  interface = new velvet::MSX::MSXInterface;
   medium = mia::medium("MSX");
   manufacturer = "Microsoft";
   name = "MSX";
 }
 
 auto MSX::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -35,7 +35,7 @@ auto MSX::load() -> bool {
   return true;
 }
 
-auto MSX::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto MSX::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "bios.rom") {
@@ -52,7 +52,7 @@ auto MSX::open(ares::Node::Object node, string name, vfs::file::mode mode, bool 
   return {};
 }
 
-auto MSX::input(ares::Node::Input node) -> void {
+auto MSX::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -64,26 +64,26 @@ auto MSX::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 MSX2::MSX2() {
-  interface = new ares::MSX::MSX2Interface;
+  interface = new velvet::MSX::MSX2Interface;
   medium = mia::medium("MSX2");
   manufacturer = "Microsoft";
   name = "MSX2";
 }
 
 auto MSX2::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -91,7 +91,7 @@ auto MSX2::load() -> bool {
   return true;
 }
 
-auto MSX2::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto MSX2::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "bios.rom") {
@@ -112,7 +112,7 @@ auto MSX2::open(ares::Node::Object node, string name, vfs::file::mode mode, bool
   return {};
 }
 
-auto MSX2::input(ares::Node::Input node) -> void {
+auto MSX2::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -124,7 +124,7 @@ auto MSX2::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

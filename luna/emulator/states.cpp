@@ -1,6 +1,6 @@
 auto Emulator::saveState(uint slot) -> bool {
   if(!system.power) return false;
-  if(auto cartridge = root->find<ares::Node::Peripheral>(0)) {
+  if(auto cartridge = root->find<velvet::Node::Peripheral>(0)) {
     if(auto location = cartridge->attribute("location")) {
       if(auto state = interface->serialize()) {
         directory::create({location, "State/"});
@@ -17,7 +17,7 @@ auto Emulator::saveState(uint slot) -> bool {
 
 auto Emulator::loadState(uint slot) -> bool {
   if(!system.power) return false;
-  if(auto cartridge = root->find<ares::Node::Peripheral>(0)) {
+  if(auto cartridge = root->find<velvet::Node::Peripheral>(0)) {
     if(auto location = cartridge->attribute("location")) {
       if(auto memory = file::read({location, "State/Slot ", slot, ".bst"})) {
         serializer state{memory.data(), (uint)memory.size()};

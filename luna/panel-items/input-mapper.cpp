@@ -23,17 +23,17 @@ auto InputMapper::hide() -> void {
   inputList.reset();
 }
 
-auto InputMapper::refresh(ares::Node::Object node) -> void {
+auto InputMapper::refresh(velvet::Node::Object node) -> void {
   this->node = node;
 
   nameLabel.setText(node->name());
   inputList.reset().setEnabled();
   inputList.append(TableViewColumn().setText("Name"));
   inputList.append(TableViewColumn().setText("Mapping").setExpandable());
-  for(auto& node : node->find<ares::Node::Input>()) {
+  for(auto& node : node->find<velvet::Node::Input>()) {
     if(node->parent() != this->node) continue;
     TableViewItem item{&inputList};
-    item.setAttribute<ares::Node::Input>("node", node);
+    item.setAttribute<velvet::Node::Input>("node", node);
     TableViewCell name{&item};
     name.setText(node->name()).setFont(Font().setBold());
     TableViewCell value{&item};
@@ -45,7 +45,7 @@ auto InputMapper::refresh(ares::Node::Object node) -> void {
 auto InputMapper::update() -> void {
   for(auto& item : inputList.items()) {
     auto value = item.cell(1);
-    auto node = item.attribute<ares::Node::Input>("node");
+    auto node = item.attribute<velvet::Node::Input>("node");
     if(auto name = node->attribute("inputName")) {
       auto device = node->attribute("deviceName");
       if(device == "Keyboard") value.setIcon(Icon::Device::Keyboard);
@@ -71,7 +71,7 @@ auto InputMapper::eventAssignMouse(uint groupID, uint inputID) -> void {
   if(batched.size() != 1) return;
   for(auto& device : inputManager.devices) {
     if(!device->isMouse()) continue;
-    assigning = batched.first().attribute<ares::Node::Input>("node");
+    assigning = batched.first().attribute<velvet::Node::Input>("node");
     eventInput(device, groupID, inputID, 0, 1, true);
     return;
   }
@@ -99,7 +99,7 @@ auto InputMapper::eventAssignNext() -> void {
   auto item = assigningQueue.takeFirst();
   inputList.selectNone();
   item.setSelected().setFocused();  //scroll the current assigning mapping into view
-  auto input = item.attribute<ares::Node::Input>("node");
+  auto input = item.attribute<velvet::Node::Input>("node");
   item.cell(1).setIcon(Icon::Go::Right).setText("(assign)");
   assigning = input;
   eventChange();
@@ -111,7 +111,7 @@ auto InputMapper::eventClear() -> void {
   if(!batched) return;  //no inputs to clear
 
   for(auto& item : batched) {
-    auto input = item.attribute<ares::Node::Input>("node");
+    auto input = item.attribute<velvet::Node::Input>("node");
     input->setAttribute("pathID");
     input->setAttribute("vendorID");
     input->setAttribute("productID");
@@ -131,9 +131,9 @@ auto InputMapper::eventChange() -> void {
   bool showMouseAxes = false;
   bool showMouseButtons = false;
   if(batched.size() == 1 && assigning) {
-    if(auto node = batched.first().attribute<ares::Node::Input>("node")) {
-      if(node->cast<ares::Node::Axis>()) showMouseAxes = true;
-      if(node->cast<ares::Node::Button>()) showMouseButtons = true;
+    if(auto node = batched.first().attribute<velvet::Node::Input>("node")) {
+      if(node->cast<velvet::Node::Axis>()) showMouseAxes = true;
+      if(node->cast<velvet::Node::Button>()) showMouseButtons = true;
     }
   }
   mouseXaxis.setVisible(showMouseAxes);
@@ -149,10 +149,10 @@ auto InputMapper::eventChange() -> void {
 auto InputMapper::eventInput(shared_pointer<HID::Device> device, uint group, uint input, int16_t oldValue, int16_t newValue, bool allowMouseInput) -> void {
   if(!assigning) return;
 
-  auto isButton  = (bool)assigning->cast<ares::Node::Button>();
-  auto isAxis    = (bool)assigning->cast<ares::Node::Axis>();
-  auto isTrigger = (bool)assigning->cast<ares::Node::Trigger>();
-  auto isRumble  = (bool)assigning->cast<ares::Node::Rumble>();
+  auto isButton  = (bool)assigning->cast<velvet::Node::Button>();
+  auto isAxis    = (bool)assigning->cast<velvet::Node::Axis>();
+  auto isTrigger = (bool)assigning->cast<velvet::Node::Trigger>();
+  auto isRumble  = (bool)assigning->cast<velvet::Node::Rumble>();
 
   bool allow = false;
   string qualifier;

@@ -34,7 +34,7 @@ auto PortConnector::isMiaType() const -> bool {
   return false;
 }
 
-auto PortConnector::refresh(ares::Node::Port port) -> void {
+auto PortConnector::refresh(velvet::Node::Port port) -> void {
   this->port = port;
   importButton.setVisible(isMiaType());
 
@@ -72,7 +72,7 @@ auto PortConnector::refresh(ares::Node::Port port) -> void {
       item.setAttribute("type", "template");
       item.setAttribute("location", {location, name, "/"});
       item.setAttribute("path", location);
-      item.setAttribute("name", name);
+      item.setAttribute("name", name.trimRight("/", 1L));
       item.setIcon(Icon::Action::Add).setText(name);
     }
   }
@@ -165,7 +165,7 @@ auto PortConnector::eventActivate() -> void {
       .setTitle("Error").setAlignment(program).error();
 
       if(auto markup = file::read({location, "settings.bml"})) {
-        auto node = ares::Node::unserialize(markup);
+        auto node = velvet::Node::unserialize(markup);
         //update the location and name here, in case the folder moved since it was last connected
         node->setAttribute("location", location);
         node->setAttribute("name", item.attribute("name"));

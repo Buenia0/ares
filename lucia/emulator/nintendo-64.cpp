@@ -3,31 +3,31 @@
 struct Nintendo64 : Emulator {
   Nintendo64();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct Nintendo64DD : Emulator {
   Nintendo64DD();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 Nintendo64::Nintendo64() {
-  interface = new ares::Nintendo64::Nintendo64Interface;
+  interface = new velvet::Nintendo64::Nintendo64Interface;
   medium = mia::medium("Nintendo 64");
   manufacturer = "Nintendo";
   name = "Nintendo 64";
 }
 
 auto Nintendo64::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -35,7 +35,7 @@ auto Nintendo64::load() -> bool {
   return true;
 }
 
-auto Nintendo64::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto Nintendo64::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "pif.rom") {
@@ -60,7 +60,7 @@ auto Nintendo64::open(ares::Node::Object node, string name, vfs::file::mode mode
   return {};
 }
 
-auto Nintendo64::input(ares::Node::Input node) -> void {
+auto Nintendo64::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "X-axis" ) mapping = virtualPad.xAxis;
@@ -82,17 +82,17 @@ auto Nintendo64::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto axis = node->cast<ares::Node::Axis>()) {
+    if(auto axis = node->cast<velvet::Node::Axis>()) {
       axis->setValue(value);
     }
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 Nintendo64DD::Nintendo64DD() {
-  interface = new ares::Nintendo64::Nintendo64Interface;
+  interface = new velvet::Nintendo64::Nintendo64Interface;
   medium = mia::medium("Nintendo 64DD");
   manufacturer = "Nintendo";
   name = "Nintendo 64DD";
@@ -106,12 +106,12 @@ auto Nintendo64DD::load() -> bool {
     return false;
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -119,7 +119,7 @@ auto Nintendo64DD::load() -> bool {
   return true;
 }
 
-auto Nintendo64DD::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto Nintendo64DD::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(node->name() == "Disk Drive") {
     if(name == "program.rom") {
       return loadFirmware(firmware[0]);
@@ -132,7 +132,7 @@ auto Nintendo64DD::open(ares::Node::Object node, string name, vfs::file::mode mo
   return {};
 }
 
-auto Nintendo64DD::input(ares::Node::Input node) -> void {
+auto Nintendo64DD::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "X-axis" ) mapping = virtualPad.xAxis;
@@ -154,10 +154,10 @@ auto Nintendo64DD::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto axis = node->cast<ares::Node::Axis>()) {
+    if(auto axis = node->cast<velvet::Node::Axis>()) {
       axis->setValue(value);
     }
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

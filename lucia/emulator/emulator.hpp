@@ -15,8 +15,8 @@ struct Emulator {
   auto error(const string& text) -> void;
   auto errorFirmwareRequired(const Firmware&) -> void;
   virtual auto load() -> bool = 0;
-  virtual auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> = 0;
-  virtual auto input(ares::Node::Input) -> void = 0;
+  virtual auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> = 0;
+  virtual auto input(velvet::Node::Input) -> void = 0;
   virtual auto notify(const string& message) -> void {}
 
   struct Firmware {
@@ -32,12 +32,12 @@ struct Emulator {
     vector<uint8_t> image;
   };
 
-  shared_pointer<ares::Interface> interface;
+  shared_pointer<velvet::Interface> interface;
   shared_pointer<mia::Media> medium;
   string manufacturer;
   string name;
 
-  ares::Node::Object root;
+  velvet::Node::Object root;
   vector<Firmware> firmware;
   Game game;
 

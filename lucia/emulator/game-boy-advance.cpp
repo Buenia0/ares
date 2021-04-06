@@ -3,12 +3,12 @@
 struct GameBoyAdvance : Emulator {
   GameBoyAdvance();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 GameBoyAdvance::GameBoyAdvance() {
-  interface = new ares::GameBoyAdvance::GameBoyAdvanceInterface;
+  interface = new velvet::GameBoyAdvance::GameBoyAdvanceInterface;
   medium = mia::medium("Game Boy Advance");
   manufacturer = "Nintendo";
   name = "Game Boy Advance";
@@ -22,7 +22,7 @@ auto GameBoyAdvance::load() -> bool {
     return false;
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -30,7 +30,7 @@ auto GameBoyAdvance::load() -> bool {
   return true;
 }
 
-auto GameBoyAdvance::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto GameBoyAdvance::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "bios.rom") {
@@ -54,7 +54,7 @@ auto GameBoyAdvance::open(ares::Node::Object node, string name, vfs::file::mode 
   return {};
 }
 
-auto GameBoyAdvance::input(ares::Node::Input node) -> void {
+auto GameBoyAdvance::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -70,7 +70,7 @@ auto GameBoyAdvance::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

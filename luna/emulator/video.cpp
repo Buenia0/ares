@@ -51,7 +51,7 @@ auto Emulator::videoUpdate() -> void {
 
 auto Emulator::videoUpdateColors() -> void {
   if(!interface) return;
-  for(auto screen : root->find<ares::Node::Screen>()) {
+  for(auto screen : root->find<velvet::Node::Screen>()) {
     screen->setLuminance(settings.video.luminance);
     screen->setSaturation(settings.video.saturation);
     screen->setGamma(settings.video.gamma);

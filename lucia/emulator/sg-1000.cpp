@@ -3,24 +3,24 @@
 struct SG1000 : Emulator {
   SG1000();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 SG1000::SG1000() {
-  interface = new ares::SG1000::SG1000Interface;
+  interface = new velvet::SG1000::SG1000Interface;
   medium = mia::medium("SG-1000");
   manufacturer = "Sega";
   name = "SG-1000";
 }
 
 auto SG1000::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -28,7 +28,7 @@ auto SG1000::load() -> bool {
   return true;
 }
 
-auto SG1000::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto SG1000::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -47,7 +47,7 @@ auto SG1000::open(ares::Node::Object node, string name, vfs::file::mode mode, bo
   return {};
 }
 
-auto SG1000::input(ares::Node::Input node) -> void {
+auto SG1000::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -59,7 +59,7 @@ auto SG1000::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

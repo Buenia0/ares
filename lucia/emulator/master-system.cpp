@@ -3,31 +3,31 @@
 struct MasterSystem : Emulator {
   MasterSystem();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct GameGear : Emulator {
   GameGear();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 MasterSystem::MasterSystem() {
-  interface = new ares::MasterSystem::MasterSystemInterface;
+  interface = new velvet::MasterSystem::MasterSystemInterface;
   medium = mia::medium("Master System");
   manufacturer = "Sega";
   name = "Master System";
 }
 
 auto MasterSystem::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -35,7 +35,7 @@ auto MasterSystem::load() -> bool {
   return true;
 }
 
-auto MasterSystem::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto MasterSystem::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -54,7 +54,7 @@ auto MasterSystem::open(ares::Node::Object node, string name, vfs::file::mode mo
   return {};
 }
 
-auto MasterSystem::input(ares::Node::Input node) -> void {
+auto MasterSystem::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Pause") mapping = virtualPad.start;
@@ -68,21 +68,21 @@ auto MasterSystem::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 GameGear::GameGear() {
-  interface = new ares::MasterSystem::GameGearInterface;
+  interface = new velvet::MasterSystem::GameGearInterface;
   medium = mia::medium("Game Gear");
   manufacturer = "Sega";
   name = "Game Gear";
 }
 
 auto GameGear::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -90,7 +90,7 @@ auto GameGear::load() -> bool {
   return true;
 }
 
-auto GameGear::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto GameGear::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -109,7 +109,7 @@ auto GameGear::open(ares::Node::Object node, string name, vfs::file::mode mode, 
   return {};
 }
 
-auto GameGear::input(ares::Node::Input node) -> void {
+auto GameGear::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -122,7 +122,7 @@ auto GameGear::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

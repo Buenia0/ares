@@ -21,10 +21,10 @@ auto EventManager::refresh() -> void {
   }
 }
 
-auto EventManager::refresh(ares::Node::Object node) -> void {
-  if(auto tracer = node->cast<ares::Node::Tracer>()) {
+auto EventManager::refresh(velvet::Node::Object node) -> void {
+  if(auto tracer = node->cast<velvet::Node::Tracer>()) {
     ListViewItem item{&listView};
-    item.setAttribute<ares::Node::Tracer>("tracer", tracer);
+    item.setAttribute<velvet::Node::Tracer>("tracer", tracer);
     item.setCheckable();
     item.setChecked(tracer->enabled());
     item.setText({tracer->component(), " ", tracer->name()});
@@ -37,7 +37,7 @@ auto EventManager::onChange() -> void {
 }
 
 auto EventManager::onToggle(ListViewItem item) -> void {
-  if(auto tracer = item.attribute<ares::Node::Tracer>("tracer")) {
+  if(auto tracer = item.attribute<velvet::Node::Tracer>("tracer")) {
     tracer->setEnabled(item.checked());
   }
 }

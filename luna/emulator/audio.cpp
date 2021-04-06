@@ -50,7 +50,7 @@ auto Emulator::audioUpdate() -> void {
 
 auto Emulator::audioUpdateEffects() -> void {
   if(!interface) return;
-  for(auto stream : root->find<ares::Node::Stream>()) {
+  for(auto stream : root->find<velvet::Node::Stream>()) {
     stream->setResamplerFrequency(settings.audio.frequency + settings.audio.skew);
   }
 }

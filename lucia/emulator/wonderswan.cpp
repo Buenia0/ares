@@ -3,33 +3,33 @@
 struct WonderSwan : Emulator {
   WonderSwan();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct WonderSwanColor : Emulator {
   WonderSwanColor();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct PocketChallengeV2 : Emulator {
   PocketChallengeV2();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 WonderSwan::WonderSwan() {
-  interface = new ares::WonderSwan::WonderSwanInterface;
+  interface = new velvet::WonderSwan::WonderSwanInterface;
   medium = mia::medium("WonderSwan");
   manufacturer = "Bandai";
   name = "WonderSwan";
 }
 
 auto WonderSwan::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -37,7 +37,7 @@ auto WonderSwan::load() -> bool {
   return true;
 }
 
-auto WonderSwan::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto WonderSwan::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(node->identity() == "System" && name == "boot.rom") {
@@ -70,7 +70,7 @@ auto WonderSwan::open(ares::Node::Object node, string name, vfs::file::mode mode
   return {};
 }
 
-auto WonderSwan::input(ares::Node::Input node) -> void {
+auto WonderSwan::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Y1"   ) mapping = virtualPad.x;
@@ -87,21 +87,21 @@ auto WonderSwan::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 WonderSwanColor::WonderSwanColor() {
-  interface = new ares::WonderSwan::WonderSwanColorInterface;
+  interface = new velvet::WonderSwan::WonderSwanColorInterface;
   medium = mia::medium("WonderSwan Color");
   manufacturer = "Bandai";
   name = "WonderSwan Color";
 }
 
 auto WonderSwanColor::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -109,7 +109,7 @@ auto WonderSwanColor::load() -> bool {
   return true;
 }
 
-auto WonderSwanColor::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto WonderSwanColor::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(node->identity() == "System" && name == "boot.rom") {
@@ -142,7 +142,7 @@ auto WonderSwanColor::open(ares::Node::Object node, string name, vfs::file::mode
   return {};
 }
 
-auto WonderSwanColor::input(ares::Node::Input node) -> void {
+auto WonderSwanColor::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Y1"   ) mapping = virtualPad.x;
@@ -159,21 +159,21 @@ auto WonderSwanColor::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 PocketChallengeV2::PocketChallengeV2() {
-  interface = new ares::WonderSwan::PocketChallengeV2Interface;
+  interface = new velvet::WonderSwan::PocketChallengeV2Interface;
   medium = mia::medium("Pocket Challenge V2");
   manufacturer = "Benesse";
   name = "Pocket Challenge V2";
 }
 
 auto PocketChallengeV2::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -181,7 +181,7 @@ auto PocketChallengeV2::load() -> bool {
   return true;
 }
 
-auto PocketChallengeV2::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto PocketChallengeV2::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(node->identity() == "System" && name == "boot.rom") {
@@ -214,7 +214,7 @@ auto PocketChallengeV2::open(ares::Node::Object node, string name, vfs::file::mo
   return {};
 }
 
-auto PocketChallengeV2::input(ares::Node::Input node) -> void {
+auto PocketChallengeV2::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -229,7 +229,7 @@ auto PocketChallengeV2::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

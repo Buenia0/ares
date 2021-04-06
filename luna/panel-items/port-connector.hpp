@@ -3,7 +3,7 @@ struct PortConnector : PanelItem {
   auto show() -> void override;
   auto hide() -> void override;
   auto isMiaType() const -> bool;
-  auto refresh(ares::Node::Port port) -> void;
+  auto refresh(velvet::Node::Port port) -> void;
 
   auto eventImport() -> void;
   auto eventActivate() -> void;
@@ -24,5 +24,5 @@ struct PortConnector : PanelItem {
     Widget controlSpacer{&controlLayout, Size{~0, 0}};
     Button acceptButton{&controlLayout, Size{80_sx, 0}};
 
-  ares::Node::Port port;
+  velvet::Node::Port port;
 };

@@ -9,7 +9,7 @@
 
 Emulator emulator;
 
-auto Emulator::create(shared_pointer<ares::Interface> instance, string location) -> void {
+auto Emulator::create(shared_pointer<velvet::Interface> instance, string location) -> void {
   interface = instance;
 
   system = {};
@@ -19,10 +19,10 @@ auto Emulator::create(shared_pointer<ares::Interface> instance, string location)
 
   string configuration = file::read({location, "settings.bml"});
   if(!configuration) {
-    auto system = ares::Node::System::create();
+    auto system = velvet::Node::System::create();
     system->setName(interface->name());
     system->setAttribute("location", location);
-    configuration = ares::Node::serialize(system);
+    configuration = velvet::Node::serialize(system);
   }
 
   //peripherals may have been renamed or deleted since last run; remove them from the configuration now
@@ -33,7 +33,7 @@ auto Emulator::create(shared_pointer<ares::Interface> instance, string location)
   screens.reset();
   streams.reset();
   interface->load(root);
-  root->copy(ares::Node::unserialize(configuration));
+  root->copy(velvet::Node::unserialize(configuration));
 
   systemMenu.setText(system.name);
   toolsMenu.pauseEmulation.setChecked(false);
@@ -56,7 +56,7 @@ auto Emulator::unload() -> void {
   if(system.log) system.log.close();
 
   if(auto location = root->attribute("location")) {
-    file::write({location, "settings.bml"}, ares::Node::serialize(root));
+    file::write({location, "settings.bml"}, velvet::Node::serialize(root));
   }
 
   inputManager.unbind();
@@ -65,7 +65,7 @@ auto Emulator::unload() -> void {
   interface->unload();
   interface.reset();
 
-  program.setTitle({"luna v", ares::Version});
+  program.setTitle({"luna v", velvet::Version});
   systemMenu.setText("System");
   setCaption();
 }
@@ -132,8 +132,8 @@ auto Emulator::power(bool on) -> void {
 }
 
 //used to prevent connecting the same (emulated) physical device to multiple ports simultaneously
-auto Emulator::connected(string location) -> ares::Node::Port {
-  for(auto& peripheral : root->find<ares::Node::Peripheral>()) {
+auto Emulator::connected(string location) -> velvet::Node::Port {
+  for(auto& peripheral : root->find<velvet::Node::Peripheral>()) {
     if(location == peripheral->attribute("location")) {
       if(auto parent = peripheral->parent()) return parent.acquire();
     }

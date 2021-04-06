@@ -1,6 +1,6 @@
 name := mia
 build := performance
-flags += -I. -I.. -I../ares
+flags += -I. -I.. -I../velvet
 
 nall.path := ../nall
 include $(nall.path)/GNUmakefile

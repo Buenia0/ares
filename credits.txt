@@ -1,15 +1,20 @@
-Copyright 2004 - 2020 byuu (Near)
+Copyright 2004 - 2020 byuu-san (Near), 2021 BueniaDev (Buenia0) and contributors
 
 [emulation]
 
 Master System - YM2413: Talarubi
 Mega Drive - YM2612: Talarubi
+Mega Drive - SVP: notaz and Tasco Deluxe
 Nintendo 64 - RSP - VU - SSE4: MAME team
 PlayStation - SPU: Stenzek
 PlayStation - SPU - Reverb: Ryphecha
 Super Famicom - DSP: blargg
 Super Famicom - SDD1 - Decompression: Andreas Naive
 Super Famicom - SPC7110 - Decompression: neviksti and Talarubi
+
+[frontends]
+
+celes (barebones SDL2 frontend): BueniaDev
 
 [libraries]
 
@@ -23,3 +28,4 @@ ruby/input/joypad/iokit: Sintendo
 Dave Shadoff: PC Engine CD disc seek timing information
 krom: N64 and PS1 test ROMs
 MerryMage: extensive help implementing elliptic curves and Reed Solomon
+BueniaDev: slew of bugfixes backported from higan

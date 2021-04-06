@@ -16,9 +16,9 @@ auto GraphicsViewer::construct() -> void {
 
 auto GraphicsViewer::reload() -> void {
   graphicsList.reset();
-  for(auto graphics : ares::Node::enumerate<ares::Node::Graphics>(emulator->root)) {
+  for(auto graphics : velvet::Node::enumerate<velvet::Node::Graphics>(emulator->root)) {
     ComboButtonItem item{&graphicsList};
-    item.setAttribute<ares::Node::Graphics>("node", graphics);
+    item.setAttribute<velvet::Node::Graphics>("node", graphics);
     item.setText(graphics->name());
   }
   eventChange();
@@ -31,7 +31,7 @@ auto GraphicsViewer::unload() -> void {
 
 auto GraphicsViewer::refresh() -> void {
   if(auto item = graphicsList.selected()) {
-    if(auto graphics = item.attribute<ares::Node::Graphics>("node")) {
+    if(auto graphics = item.attribute<velvet::Node::Graphics>("node")) {
       auto width  = graphics->width();
       auto height = graphics->height();
       auto input  = graphics->capture();
@@ -62,7 +62,7 @@ auto GraphicsViewer::eventChange() -> void {
 
 auto GraphicsViewer::eventExport() -> void {
   if(auto item = graphicsList.selected()) {
-    if(auto graphics = item.attribute<ares::Node::Graphics>("node")) {
+    if(auto graphics = item.attribute<velvet::Node::Graphics>("node")) {
       auto width  = graphics->width();
       auto height = graphics->height();
       auto input  = graphics->capture();

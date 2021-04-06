@@ -1,17 +1,17 @@
-struct Program : ares::Platform {
+struct Program : velvet::Platform {
   auto create() -> void;
   auto main() -> void;
   auto quit() -> void;
 
   //platform.cpp
-  auto attach(ares::Node::Object) -> void override;
-  auto detach(ares::Node::Object) -> void override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto event(ares::Event) -> void override;
+  auto attach(velvet::Node::Object) -> void override;
+  auto detach(velvet::Node::Object) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto event(velvet::Event) -> void override;
   auto log(string_view message) -> void override;
-  auto video(ares::Node::Screen, const uint32_t* data, uint pitch, uint width, uint height) -> void override;
-  auto audio(ares::Node::Stream) -> void override;
-  auto input(ares::Node::Input) -> void override;
+  auto video(velvet::Node::Screen, const uint32_t* data, uint pitch, uint width, uint height) -> void override;
+  auto audio(velvet::Node::Stream) -> void override;
+  auto input(velvet::Node::Input) -> void override;
 
   //load.cpp
   auto identify(const string& filename) -> shared_pointer<Emulator>;
@@ -50,8 +50,8 @@ struct Program : ares::Platform {
   bool startFullScreen = false;
   string startGameLoad;
 
-  vector<ares::Node::Screen> screens;
-  vector<ares::Node::Stream> streams;
+  vector<velvet::Node::Screen> screens;
+  vector<velvet::Node::Stream> streams;
 
   bool paused = false;
   bool fastForwarding = false;

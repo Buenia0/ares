@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=celes
+Comment=Emulator
+Exec=celes
+Icon=celes
+Terminal=false
+Type=Application
+Categories=Game;Emulator;

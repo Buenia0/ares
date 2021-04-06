@@ -3,11 +3,11 @@ struct NodeManager : PanelList {
   auto show() -> void override;
   auto hide() -> void override;
   auto refresh() -> void;
-  auto refresh(ares::Node::Object node, uint depth) -> void;
+  auto refresh(velvet::Node::Object node, uint depth) -> void;
   auto refreshSettings() -> void;
-  auto name(ares::Node::Object node, uint depth) -> string;
+  auto name(velvet::Node::Object node, uint depth) -> string;
   auto onChange() -> void;
 
-  ares::Node::Object root;
+  velvet::Node::Object root;
   ListView listView{this, Size{~0, ~0}};
 };

@@ -215,7 +215,7 @@ auto Emulator::unload() -> void {
 }
 
 auto Emulator::setBoolean(const string& name, bool value) -> bool {
-  if(auto node = root->scan<ares::Node::Boolean>(name)) {
+  if(auto node = root->scan<velvet::Node::Boolean>(name)) {
     node->setValue(value);
     return true;
   }
@@ -223,8 +223,8 @@ auto Emulator::setBoolean(const string& name, bool value) -> bool {
 }
 
 auto Emulator::setOverscan(bool value) -> bool {
-  if(auto screen = root->scan<ares::Node::Screen>("Screen")) {
-    if(auto overscan = screen->find<ares::Node::Boolean>("Overscan")) {
+  if(auto screen = root->scan<velvet::Node::Screen>("Screen")) {
+    if(auto overscan = screen->find<velvet::Node::Boolean>("Overscan")) {
       overscan->setValue(value);
       return true;
     }

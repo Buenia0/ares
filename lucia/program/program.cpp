@@ -10,7 +10,7 @@
 Program program;
 
 auto Program::create() -> void {
-  ares::platform = this;
+  velvet::platform = this;
 
   videoDriverUpdate();
   audioDriverUpdate();
@@ -51,10 +51,10 @@ auto Program::main() -> void {
   if(!runAhead || fastForwarding || rewinding) {
     emulator->interface->run();
   } else {
-    ares::setRunAhead(true);
+    velvet::setRunAhead(true);
     emulator->interface->run();
     auto state = emulator->interface->serialize(false);
-    ares::setRunAhead(false);
+    velvet::setRunAhead(false);
     emulator->interface->run();
     state.setMode(serializer::Mode::Load);
     emulator->interface->unserialize(state);

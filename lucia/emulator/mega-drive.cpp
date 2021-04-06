@@ -3,37 +3,37 @@
 struct MegaDrive : Emulator {
   MegaDrive();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct MegaCD : Emulator {
   MegaCD();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 
   uint regionID = 0;
 };
 
 MegaDrive::MegaDrive() {
-  interface = new ares::MegaDrive::MegaDriveInterface;
+  interface = new velvet::MegaDrive::MegaDriveInterface;
   medium = mia::medium("Mega Drive");
   manufacturer = "Sega";
   name = "Mega Drive";
 }
 
 auto MegaDrive::load() -> bool {
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-U → NTSC-J → PAL");
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Fighting Pad");
     port->connect();
   }
@@ -41,7 +41,7 @@ auto MegaDrive::load() -> bool {
   return true;
 }
 
-auto MegaDrive::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto MegaDrive::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -60,7 +60,7 @@ auto MegaDrive::open(ares::Node::Object node, string name, vfs::file::mode mode,
   return {};
 }
 
-auto MegaDrive::input(ares::Node::Input node) -> void {
+auto MegaDrive::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -78,14 +78,14 @@ auto MegaDrive::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 MegaCD::MegaCD() {
-  interface = new ares::MegaDrive::MegaDriveInterface;
+  interface = new velvet::MegaDrive::MegaDriveInterface;
   medium = mia::medium("Mega CD");
   manufacturer = "Sega";
   name = "Mega CD";
@@ -111,21 +111,21 @@ auto MegaCD::load() -> bool {
     return false;
   }
 
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-U → NTSC-J → PAL");
   }
 
-  if(auto port = root->find<ares::Node::Port>("Expansion Port")) {
+  if(auto port = root->find<velvet::Node::Port>("Expansion Port")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->scan<ares::Node::Port>("Disc Tray")) {
+  if(auto port = root->scan<velvet::Node::Port>("Disc Tray")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Fighting Pad");
     port->connect();
   }
@@ -133,7 +133,7 @@ auto MegaCD::load() -> bool {
   return true;
 }
 
-auto MegaCD::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto MegaCD::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(node->name() == "Mega Drive") {
     if(name == "manifest.bml") {
       return Emulator::manifest("Mega Drive", firmware[regionID].location);
@@ -177,7 +177,7 @@ auto MegaCD::open(ares::Node::Object node, string name, vfs::file::mode mode, bo
   return {};
 }
 
-auto MegaCD::input(ares::Node::Input node) -> void {
+auto MegaCD::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"   ) mapping = virtualPad.up;
@@ -195,7 +195,7 @@ auto MegaCD::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

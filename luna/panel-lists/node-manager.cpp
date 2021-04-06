@@ -18,9 +18,9 @@ auto NodeManager::hide() -> void {
 //recreate the tree after nodes have been added or removed
 auto NodeManager::refresh() -> void {
   //save the currently selected node to try and reselect it after rebuilding the tree
-  ares::Node::Object selected;
+  velvet::Node::Object selected;
   if(auto item = listView.selected()) {
-    selected = item.attribute<ares::Node::Object>("node");
+    selected = item.attribute<velvet::Node::Object>("node");
   }
 
   listView.reset();
@@ -28,21 +28,21 @@ auto NodeManager::refresh() -> void {
 
   //try and restore the previously selected node
   for(auto& item : listView.items()) {
-    if(item.attribute<ares::Node::Object>("node") == selected) {
+    if(item.attribute<velvet::Node::Object>("node") == selected) {
       item.setSelected().setFocused();
     }
   }
 }
 
-auto NodeManager::refresh(ares::Node::Object node, uint depth) -> void {
-  if(node->is<ares::Node::Memory>()) return;
-  if(node->is<ares::Node::Graphics>()) return;
-  if(node->is<ares::Node::Tracer>()) return;
-  if(node->is<ares::Node::Input>()) return;
-  if(node->is<ares::Node::Sprite>()) return;
+auto NodeManager::refresh(velvet::Node::Object node, uint depth) -> void {
+  if(node->is<velvet::Node::Memory>()) return;
+  if(node->is<velvet::Node::Graphics>()) return;
+  if(node->is<velvet::Node::Tracer>()) return;
+  if(node->is<velvet::Node::Input>()) return;
+  if(node->is<velvet::Node::Sprite>()) return;
 
   ListViewItem item{&listView};
-  item.setAttribute<ares::Node::Object>("node", node);
+  item.setAttribute<velvet::Node::Object>("node", node);
   item.setAttribute<uint>("depth", depth);
   item.setText(name(node, depth));
 
@@ -52,8 +52,8 @@ auto NodeManager::refresh(ares::Node::Object node, uint depth) -> void {
 //refresh the tree after settings have changed
 auto NodeManager::refreshSettings() -> void {
   for(auto& item : listView.items()) {
-    auto node = item.attribute<ares::Node::Object>("node");
-    if(auto setting = node->cast<ares::Node::Setting>()) {
+    auto node = item.attribute<velvet::Node::Object>("node");
+    if(auto setting = node->cast<velvet::Node::Setting>()) {
       uint depth = item.attribute<uint>("depth");
       item.setText(name(node, depth));
     }
@@ -62,11 +62,11 @@ auto NodeManager::refreshSettings() -> void {
 
 //generate a name for the panel list for a given node
 //insert spacing based on depth to simulate a TreeView in a ListView widget
-auto NodeManager::name(ares::Node::Object node, uint depth) -> string {
+auto NodeManager::name(velvet::Node::Object node, uint depth) -> string {
   string name;
   for(uint n : range(depth)) name.append("   ");
   name.append(node->attribute("name") ? node->attribute("name") : node->name());
-  if(auto setting = node->cast<ares::Node::Setting>()) {
+  if(auto setting = node->cast<velvet::Node::Setting>()) {
     name.append(": ", setting->readValue());
     if(!setting->dynamic() && setting->readLatch() != setting->readValue()) {
       name.append(" (", setting->readLatch(), ")");
@@ -76,25 +76,25 @@ auto NodeManager::name(ares::Node::Object node, uint depth) -> string {
 }
 
 auto NodeManager::onChange() -> void {
-  if(auto node = listView.selected().attribute<ares::Node::Object>("node")) {
-    if(auto port = node->cast<ares::Node::Port>()) {
+  if(auto node = listView.selected().attribute<velvet::Node::Object>("node")) {
+    if(auto port = node->cast<velvet::Node::Port>()) {
       portConnector.refresh(port);
       return program.setPanelItem(portConnector);
     }
 
-    if(auto setting = node->cast<ares::Node::Setting>()) {
+    if(auto setting = node->cast<velvet::Node::Setting>()) {
       settingEditor.refresh(setting);
       return program.setPanelItem(settingEditor);
     }
 
-    if(auto inputs = node->find<ares::Node::Input>()) {
+    if(auto inputs = node->find<velvet::Node::Input>()) {
       if(inputs.first()->parent() == node) {
         inputMapper.refresh(node);
         return program.setPanelItem(inputMapper);
       }
     }
 
-    if(auto peripheral = node->cast<ares::Node::Peripheral>()) {
+    if(auto peripheral = node->cast<velvet::Node::Peripheral>()) {
       peripheralOverview.refresh(peripheral);
       return program.setPanelItem(peripheralOverview);
     }

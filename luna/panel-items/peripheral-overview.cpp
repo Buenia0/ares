@@ -13,7 +13,7 @@ auto PeripheralOverview::hide() -> void {
   peripheral = {};
 }
 
-auto PeripheralOverview::refresh(ares::Node::Peripheral peripheral) -> void {
+auto PeripheralOverview::refresh(velvet::Node::Peripheral peripheral) -> void {
   this->peripheral = peripheral;
   manifest.setText(peripheral->manifest());
 }

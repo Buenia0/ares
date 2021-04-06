@@ -3,14 +3,14 @@
 struct PlayStation : Emulator {
   PlayStation();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 
   uint regionID = 0;
 };
 
 PlayStation::PlayStation() {
-  interface = new ares::PlayStation::PlayStationInterface;
+  interface = new velvet::PlayStation::PlayStationInterface;
   medium = mia::medium("PlayStation");
   manufacturer = "Sony";
   name = "PlayStation";
@@ -36,20 +36,20 @@ auto PlayStation::load() -> bool {
     return false;
   }
 
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-U → NTSC-J → PAL");
   }
 
-  if(auto fastBoot = root->find<ares::Node::Boolean>("Fast Boot")) {
+  if(auto fastBoot = root->find<velvet::Node::Boolean>("Fast Boot")) {
     fastBoot->setValue(settings.general.fastBoot);
   }
 
-  if(auto port = root->find<ares::Node::Port>("PlayStation/Disc Tray")) {
+  if(auto port = root->find<velvet::Node::Port>("PlayStation/Disc Tray")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port 1")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port 1")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -57,7 +57,7 @@ auto PlayStation::load() -> bool {
   return true;
 }
 
-auto PlayStation::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto PlayStation::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "bios.rom") {
     return Emulator::loadFirmware(firmware[regionID]);
   }
@@ -92,7 +92,7 @@ auto PlayStation::open(ares::Node::Object node, string name, vfs::file::mode mod
   return {};
 }
 
-auto PlayStation::input(ares::Node::Input node) -> void {
+auto PlayStation::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"      ) mapping = virtualPad.up;
@@ -118,10 +118,10 @@ auto PlayStation::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto axis = node->cast<ares::Node::Axis>()) {
+    if(auto axis = node->cast<velvet::Node::Axis>()) {
       axis->setValue(value);
     }
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

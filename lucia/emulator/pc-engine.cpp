@@ -3,15 +3,15 @@
 struct PCEngine : Emulator {
   PCEngine();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct PCEngineCD : Emulator {
   PCEngineCD();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 
   uint regionID = 0;
 };
@@ -19,28 +19,28 @@ struct PCEngineCD : Emulator {
 struct SuperGrafx : Emulator {
   SuperGrafx();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 PCEngine::PCEngine() {
-  interface = new ares::PCEngine::PCEngineInterface;
+  interface = new velvet::PCEngine::PCEngineInterface;
   medium = mia::medium("PC Engine");
   manufacturer = "NEC";
   name = "PC Engine";
 }
 
 auto PCEngine::load() -> bool {
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-U → NTSC-J");
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -48,7 +48,7 @@ auto PCEngine::load() -> bool {
   return true;
 }
 
-auto PCEngine::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto PCEngine::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -72,7 +72,7 @@ auto PCEngine::open(ares::Node::Object node, string name, vfs::file::mode mode, 
   return {};
 }
 
-auto PCEngine::input(ares::Node::Input node) -> void {
+auto PCEngine::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -86,14 +86,14 @@ auto PCEngine::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 PCEngineCD::PCEngineCD() {
-  interface = new ares::PCEngine::PCEngineInterface;
+  interface = new velvet::PCEngine::PCEngineInterface;
   medium = mia::medium("PC Engine CD");
   manufacturer = "NEC";
   name = "PC Engine CD";
@@ -117,21 +117,21 @@ auto PCEngineCD::load() -> bool {
     return false;
   }
 
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-J → NTSC-U");
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("PC Engine CD/Disc Tray")) {
+  if(auto port = root->find<velvet::Node::Port>("PC Engine CD/Disc Tray")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -139,7 +139,7 @@ auto PCEngineCD::load() -> bool {
   return true;
 }
 
-auto PCEngineCD::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto PCEngineCD::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(node->name() == "PC Engine") {
     if(name == "manifest.bml") {
       return Emulator::manifest("PC Engine", firmware[regionID].location);
@@ -183,7 +183,7 @@ auto PCEngineCD::open(ares::Node::Object node, string name, vfs::file::mode mode
   return {};
 }
 
-auto PCEngineCD::input(ares::Node::Input node) -> void {
+auto PCEngineCD::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -197,30 +197,30 @@ auto PCEngineCD::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 SuperGrafx::SuperGrafx() {
-  interface = new ares::PCEngine::SuperGrafxInterface;
+  interface = new velvet::PCEngine::SuperGrafxInterface;
   medium = mia::medium("SuperGrafx");
   manufacturer = "NEC";
   name = "SuperGrafx";
 }
 
 auto SuperGrafx::load() -> bool {
-  if(auto region = root->find<ares::Node::String>("Region")) {
+  if(auto region = root->find<velvet::Node::String>("Region")) {
     region->setValue("NTSC-U → NTSC-J");
   }
 
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
 
-  if(auto port = root->find<ares::Node::Port>("Controller Port")) {
+  if(auto port = root->find<velvet::Node::Port>("Controller Port")) {
     port->allocate("Gamepad");
     port->connect();
   }
@@ -228,7 +228,7 @@ auto SuperGrafx::load() -> bool {
   return true;
 }
 
-auto SuperGrafx::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto SuperGrafx::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   auto document = BML::unserialize(game.manifest);
@@ -252,7 +252,7 @@ auto SuperGrafx::open(ares::Node::Object node, string name, vfs::file::mode mode
   return {};
 }
 
-auto SuperGrafx::input(ares::Node::Input node) -> void {
+auto SuperGrafx::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -266,7 +266,7 @@ auto SuperGrafx::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

@@ -1,29 +1,29 @@
-auto Program::attach(ares::Node::Object node) -> void {
-  if(auto screen = node->cast<ares::Node::Screen>()) {
-    screens = emulator->root->find<ares::Node::Screen>();
+auto Program::attach(velvet::Node::Object node) -> void {
+  if(auto screen = node->cast<velvet::Node::Screen>()) {
+    screens = emulator->root->find<velvet::Node::Screen>();
   }
 
-  if(auto stream = node->cast<ares::Node::Stream>()) {
-    streams = emulator->root->find<ares::Node::Stream>();
+  if(auto stream = node->cast<velvet::Node::Stream>()) {
+    streams = emulator->root->find<velvet::Node::Stream>();
     stream->setResamplerFrequency(ruby::audio.frequency());
   }
 }
 
-auto Program::detach(ares::Node::Object node) -> void {
-  if(auto screen = node->cast<ares::Node::Screen>()) {
-    screens = emulator->root->find<ares::Node::Screen>();
+auto Program::detach(velvet::Node::Object node) -> void {
+  if(auto screen = node->cast<velvet::Node::Screen>()) {
+    screens = emulator->root->find<velvet::Node::Screen>();
   }
 
-  if(auto stream = node->cast<ares::Node::Stream>()) {
-    streams = emulator->root->find<ares::Node::Stream>();
+  if(auto stream = node->cast<velvet::Node::Stream>()) {
+    streams = emulator->root->find<velvet::Node::Stream>();
   }
 }
 
-auto Program::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto Program::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   return emulator->open(node, name, mode, required);
 }
 
-auto Program::event(ares::Event event) -> void {
+auto Program::event(velvet::Event event) -> void {
 }
 
 auto Program::log(string_view message) -> void {
@@ -38,7 +38,7 @@ auto Program::log(string_view message) -> void {
   traceLogger.fp.print(message);
 }
 
-auto Program::video(ares::Node::Screen node, const uint32_t* data, uint pitch, uint width, uint height) -> void {
+auto Program::video(velvet::Node::Screen node, const uint32_t* data, uint pitch, uint width, uint height) -> void {
   if(!screens) return;
 
   if(requestScreenshot) {
@@ -101,7 +101,7 @@ auto Program::video(ares::Node::Screen node, const uint32_t* data, uint pitch, u
   }
 }
 
-auto Program::audio(ares::Node::Stream node) -> void {
+auto Program::audio(velvet::Node::Stream node) -> void {
   if(!streams) return;
 
   //process all pending frames (there may be more than one waiting)
@@ -140,7 +140,7 @@ auto Program::audio(ares::Node::Stream node) -> void {
   }
 }
 
-auto Program::input(ares::Node::Input node) -> void {
+auto Program::input(velvet::Node::Input node) -> void {
   if(!driverSettings.inputDefocusAllow.checked()) {
     if(!ruby::video.fullScreen() && !presentation.focused()) {
       //todo: set node->value() to zero here

@@ -2,7 +2,7 @@ name := luna
 build := performance
 openmp := false
 local := true
-flags += -I. -I.. -I../ares
+flags += -I. -I.. -I../velvet
 
 ifeq ($(platform),local)
   flags += -march=native
@@ -18,14 +18,14 @@ ruby.path := ../ruby
 include $(ruby.path)/GNUmakefile
 
 hiro.path := ../hiro
-hiro.resource := $(ui)/resource/luna.rc
+hiro.resource := resource/luna.rc
 include $(hiro.path)/GNUmakefile
 
 profile := accuracy
 cores := fc sfc sg ms md pce msx cv gb gba ws ngp
 
-ares.path := ../ares
-include $(ares.path)/GNUmakefile
+velvet.path := ../velvet
+include $(velvet.path)/GNUmakefile
 
 luna.path := ../luna
 
@@ -41,8 +41,8 @@ $(object.path)/luna-menus.o: $(luna.path)/menus/menus.cpp
 $(object.path)/luna-program.o: $(luna.path)/program/program.cpp
 $(object.path)/luna-settings.o: $(luna.path)/settings/settings.cpp
 
-all.objects := $(libco.objects) $(ruby.objects) $(hiro.objects) $(ares.objects) $(luna.objects)
-all.options := $(libco.options) $(ruby.options) $(hiro.options) $(ares.options) $(luna.options) $(options)
+all.objects := $(libco.objects) $(ruby.objects) $(hiro.objects) $(velvet.objects) $(luna.objects)
+all.options := $(libco.options) $(ruby.options) $(hiro.options) $(velvet.options) $(luna.options) $(options)
 
 all: $(all.objects)
 	$(info Linking $(output.path)/$(name) ...)
@@ -82,7 +82,7 @@ else ifneq ($(filter $(platform),linux bsd),)
 	mkdir -p $(prefix)/share/icons/
 	mkdir -p $(prefix)/share/$(name)/
 	cp $(output.path)/$(name) $(prefix)/bin/$(name)
-	cp -R $(ares.path)/System/* $(prefix)/share/$(name)/
+	cp -R $(velvet.path)/System/* $(prefix)/share/$(name)/
 	cp resource/$(name).desktop $(prefix)/share/applications/$(name).desktop
 	cp resource/$(name).png $(prefix)/share/icons/$(name).png
 endif

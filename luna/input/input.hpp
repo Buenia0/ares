@@ -20,13 +20,13 @@ struct InputButton {
 };
 
 struct InputManager {
-  auto bind(maybe<ares::Node::Object> root = {}) -> void;
+  auto bind(maybe<velvet::Node::Object> root = {}) -> void;
   auto unbind() -> void;
 
   auto poll() -> void;
   auto eventInput(shared_pointer<HID::Device>, uint group, uint input, int16_t oldValue, int16_t newValue) -> void;
 
-  ares::Node::Object root;
+  velvet::Node::Object root;
   vector<shared_pointer<HID::Device>> devices;
   Hotkeys hotkeys;
 

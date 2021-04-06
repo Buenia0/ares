@@ -23,9 +23,9 @@ auto TraceLogger::construct() -> void {
 
 auto TraceLogger::reload() -> void {
   tracerList.reset();
-  for(auto tracer : ares::Node::enumerate<ares::Node::Tracer>(emulator->root)) {
+  for(auto tracer : velvet::Node::enumerate<velvet::Node::Tracer>(emulator->root)) {
     ListViewItem item{&tracerList};
-    item.setAttribute<ares::Node::Tracer>("tracer", tracer);
+    item.setAttribute<velvet::Node::Tracer>("tracer", tracer);
     item.setCheckable();
     item.setText({tracer->component(), " ", tracer->name()});
   }
@@ -37,7 +37,7 @@ auto TraceLogger::unload() -> void {
 }
 
 auto TraceLogger::eventToggle(ListViewItem item) -> void {
-  if(auto tracer = item.attribute<ares::Node::Tracer>("tracer")) {
+  if(auto tracer = item.attribute<velvet::Node::Tracer>("tracer")) {
     tracer->setEnabled(item.checked());
   }
 }

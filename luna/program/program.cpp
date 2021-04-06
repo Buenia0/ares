@@ -101,7 +101,7 @@ Program::Program() {
   setOverviewMode();
   resize();
 
-  setTitle({"luna v", ares::Version});
+  setTitle({"luna v", velvet::Version});
   setVisible();
 
   emulator.inputUpdate();

@@ -3,26 +3,26 @@
 struct GameBoy : Emulator {
   GameBoy();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 struct GameBoyColor : Emulator {
   GameBoyColor();
   auto load() -> bool override;
-  auto open(ares::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
-  auto input(ares::Node::Input) -> void override;
+  auto open(velvet::Node::Object, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> override;
+  auto input(velvet::Node::Input) -> void override;
 };
 
 GameBoy::GameBoy() {
-  interface = new ares::GameBoy::GameBoyInterface;
+  interface = new velvet::GameBoy::GameBoyInterface;
   medium = mia::medium("Game Boy");
   manufacturer = "Nintendo";
   name = "Game Boy";
 }
 
 auto GameBoy::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -30,7 +30,7 @@ auto GameBoy::load() -> bool {
   return true;
 }
 
-auto GameBoy::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto GameBoy::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "boot.dmg-1.rom") {
@@ -53,7 +53,7 @@ auto GameBoy::open(ares::Node::Object node, string name, vfs::file::mode mode, b
   return {};
 }
 
-auto GameBoy::input(ares::Node::Input node) -> void {
+auto GameBoy::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -67,21 +67,21 @@ auto GameBoy::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }
 }
 
 GameBoyColor::GameBoyColor() {
-  interface = new ares::GameBoy::GameBoyColorInterface;
+  interface = new velvet::GameBoy::GameBoyColorInterface;
   medium = mia::medium("Game Boy Color");
   manufacturer = "Nintendo";
   name = "Game Boy Color";
 }
 
 auto GameBoyColor::load() -> bool {
-  if(auto port = root->find<ares::Node::Port>("Cartridge Slot")) {
+  if(auto port = root->find<velvet::Node::Port>("Cartridge Slot")) {
     port->allocate();
     port->connect();
   }
@@ -89,7 +89,7 @@ auto GameBoyColor::load() -> bool {
   return true;
 }
 
-auto GameBoyColor::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto GameBoyColor::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   if(name == "manifest.bml") return Emulator::manifest();
 
   if(name == "boot.cgb-0.rom") {
@@ -112,7 +112,7 @@ auto GameBoyColor::open(ares::Node::Object node, string name, vfs::file::mode mo
   return {};
 }
 
-auto GameBoyColor::input(ares::Node::Input node) -> void {
+auto GameBoyColor::input(velvet::Node::Input node) -> void {
   auto name = node->name();
   maybe<InputMapping&> mapping;
   if(name == "Up"    ) mapping = virtualPad.up;
@@ -126,7 +126,7 @@ auto GameBoyColor::input(ares::Node::Input node) -> void {
 
   if(mapping) {
     auto value = mapping->value();
-    if(auto button = node->cast<ares::Node::Button>()) {
+    if(auto button = node->cast<velvet::Node::Button>()) {
       button->setValue(value);
     }
   }

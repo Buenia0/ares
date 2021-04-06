@@ -14,6 +14,12 @@ auto MegaDrive::export(string location) -> vector<uint8_t> {
 auto MegaDrive::heuristics(vector<uint8_t>& data, string location) -> string {
   if(data.size() < 0x200) return {};
 
+  bool isSVP = false;
+
+  if ((data[0x01c8] == 'S') && (data[0x01c9] == 'V')) {
+    isSVP = true;
+  }
+
   string ramMode = "none";
 
   uint32_t ramFrom = 0;
@@ -64,7 +70,7 @@ auto MegaDrive::heuristics(vector<uint8_t>& data, string location) -> string {
 
   string domesticName;
   domesticName.resize(48);
-  memory::copy(domesticName.get(), &data[0x0120], domesticName.size());
+  memory::copy(domesticName.get(), &data[0x120], domesticName.size());
   for(auto& c : domesticName) if(c < 0x20 || c > 0x7e) c = ' ';
   while(domesticName.find("  ")) domesticName.replace("  ", " ");
   domesticName.strip();
@@ -80,7 +86,7 @@ auto MegaDrive::heuristics(vector<uint8_t>& data, string location) -> string {
   s += "game\n";
   s +={"  name:   ", Media::name(location), "\n"};
   s +={"  label:  ", Media::name(location), "\n"};
-  s +={"  title:  ", domesticName, "\n"};
+  s +={"  title:  ", (isSVP) ? internationalName : domesticName, "\n"};
   s +={"  region: ", regions.merge(", "), "\n"};
   s += "  board\n";
 
@@ -107,6 +113,12 @@ auto MegaDrive::heuristics(vector<uint8_t>& data, string location) -> string {
     s += "      type: ROM\n";
     s +={"      size: 0x", hex(data.size()), "\n"};
     s += "      content: Program\n";
+  }
+
+  if (isSVP) {
+    s += "      hasSVP: true\n";
+  } else {
+    s += "      hasSVP: false\n";
   }
 
   if(ramSize && ramMode != "none") {

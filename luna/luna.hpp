@@ -4,9 +4,9 @@ using namespace ruby;
 #include <hiro/hiro.hpp>
 using namespace hiro;
 
-#include <ares/ares.hpp>
-extern shared_pointer<ares::Interface> interface;
-extern vector<shared_pointer<ares::Interface>> interfaces;
+#include <velvet/velvet.hpp>
+extern shared_pointer<velvet::Interface> interface;
+extern vector<shared_pointer<velvet::Interface>> interfaces;
 
 #include <nall/instance.hpp>
 

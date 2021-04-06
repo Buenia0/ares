@@ -2,7 +2,7 @@ struct SettingEditor : PanelItem {
   SettingEditor(View*);
   auto show() -> void override;
   auto hide() -> void override;
-  auto refresh(ares::Node::Setting setting = {}) -> void;
+  auto refresh(velvet::Node::Setting setting = {}) -> void;
 
   auto eventChange() -> void;
 
@@ -13,5 +13,5 @@ struct SettingEditor : PanelItem {
       Label latchedValue{&latchedLayout, Size{~0, 0}};
     ListView valueList{&layout, Size{~0, ~0}};
 
-  ares::Node::Setting setting;
+  velvet::Node::Setting setting;
 };

@@ -2,7 +2,7 @@ struct InputMapper : PanelItem {
   InputMapper(View*);
   auto show() -> void override;
   auto hide() -> void override;
-  auto refresh(ares::Node::Object) -> void;
+  auto refresh(velvet::Node::Object) -> void;
   auto update() -> void;
 
   auto eventAssignMouse(uint groupID, uint inputID) -> void;
@@ -25,7 +25,7 @@ struct InputMapper : PanelItem {
     Button assignButton{&controlLayout, Size{80_sx, 0}};
     Button clearButton{&controlLayout, Size{80_sx, 0}};
 
-  ares::Node::Object node;
-  ares::Node::Input assigning;
+  velvet::Node::Object node;
+  velvet::Node::Input assigning;
   vector<TableViewItem> assigningQueue;
 };

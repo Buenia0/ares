@@ -9,10 +9,10 @@ auto ManifestViewer::construct() -> void {
 
 auto ManifestViewer::reload() -> void {
   manifestList.reset();
-  for(auto peripheral : ares::Node::enumerate<ares::Node::Peripheral>(emulator->root)) {
+  for(auto peripheral : velvet::Node::enumerate<velvet::Node::Peripheral>(emulator->root)) {
     if(!peripheral->manifest()) continue;  //ignore peripherals with no manifest available
     ComboButtonItem item{&manifestList};
-    item.setAttribute<ares::Node::Peripheral>("node", peripheral);
+    item.setAttribute<velvet::Node::Peripheral>("node", peripheral);
     item.setText(peripheral->name());
   }
   eventChange();
@@ -25,7 +25,7 @@ auto ManifestViewer::unload() -> void {
 
 auto ManifestViewer::refresh() -> void {
   if(auto item = manifestList.selected()) {
-    if(auto peripheral = item.attribute<ares::Node::Peripheral>("node")) {
+    if(auto peripheral = item.attribute<velvet::Node::Peripheral>("node")) {
       manifestView.setText(peripheral->manifest());
     }
   } else {

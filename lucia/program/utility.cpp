@@ -11,7 +11,7 @@ auto Program::pause(bool state) -> void {
 
 auto Program::paletteUpdate() -> void {
   if(!emulator) return;
-  for(auto& screen : emulator->root->find<ares::Node::Screen>()) {
+  for(auto& screen : emulator->root->find<velvet::Node::Screen>()) {
     screen->setLuminance(settings.video.luminance);
     screen->setSaturation(settings.video.saturation);
     screen->setGamma(settings.video.gamma);

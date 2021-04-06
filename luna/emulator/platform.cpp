@@ -1,20 +1,20 @@
-auto Emulator::attach(ares::Node::Object node) -> void {
-  if(interface && node->is<ares::Node::Screen>()) {
-    screens = root->find<ares::Node::Screen>();
+auto Emulator::attach(velvet::Node::Object node) -> void {
+  if(interface && node->is<velvet::Node::Screen>()) {
+    screens = root->find<velvet::Node::Screen>();
   }
 
-  if(interface && node->is<ares::Node::Stream>()) {
-    streams = root->find<ares::Node::Stream>();
+  if(interface && node->is<velvet::Node::Stream>()) {
+    streams = root->find<velvet::Node::Stream>();
   }
 }
 
-auto Emulator::detach(ares::Node::Object node) -> void {
-  if(interface && node->is<ares::Node::Screen>()) {
-    screens = root->find<ares::Node::Screen>();
+auto Emulator::detach(velvet::Node::Object node) -> void {
+  if(interface && node->is<velvet::Node::Screen>()) {
+    screens = root->find<velvet::Node::Screen>();
   }
 
-  if(interface && node->is<ares::Node::Stream>()) {
-    streams = root->find<ares::Node::Stream>();
+  if(interface && node->is<velvet::Node::Stream>()) {
+    streams = root->find<velvet::Node::Stream>();
   }
 
   if(auto location = node->attribute("location")) {
@@ -22,7 +22,7 @@ auto Emulator::detach(ares::Node::Object node) -> void {
   }
 }
 
-auto Emulator::open(ares::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
+auto Emulator::open(velvet::Node::Object node, string name, vfs::file::mode mode, bool required) -> shared_pointer<vfs::file> {
   auto location = node->attribute("location");
 
   if(name == "manifest.bml") {
@@ -70,8 +70,8 @@ auto Emulator::open(ares::Node::Object node, string name, vfs::file::mode mode, 
   return {};
 }
 
-auto Emulator::event(ares::Event event) -> void {
-  if(event == ares::Event::Power) {
+auto Emulator::event(velvet::Event event) -> void {
+  if(event == velvet::Event::Power) {
     events.power = true;
   }
 }
@@ -85,7 +85,7 @@ auto Emulator::log(string_view message) -> void {
   system.log.print(message);
 }
 
-auto Emulator::video(ares::Node::Screen node, const uint32_t* data, uint pitch, uint width, uint height) -> void {
+auto Emulator::video(velvet::Node::Screen node, const uint32_t* data, uint pitch, uint width, uint height) -> void {
   if(requests.captureScreenshot) {
     requests.captureScreenshot = false;
     captureScreenshot(data, pitch, width, height);
@@ -147,7 +147,7 @@ auto Emulator::video(ares::Node::Screen node, const uint32_t* data, uint pitch, 
   }
 }
 
-auto Emulator::audio(ares::Node::Stream) -> void {
+auto Emulator::audio(velvet::Node::Stream) -> void {
   if(!streams) return;  //should never occur
 
   //process all pending frames (there may be more than one waiting)
@@ -187,21 +187,21 @@ auto Emulator::audio(ares::Node::Stream) -> void {
   }
 }
 
-auto Emulator::input(ares::Node::Input input) -> void {
+auto Emulator::input(velvet::Node::Input input) -> void {
   inputManager.poll();
 
   bool allow = program.viewport.focused();
   if(settings.input.unfocused == "Allow") allow = true;
   if(videoInstance.exclusive()) allow = true;
 
-  if(auto button = input->cast<ares::Node::Button>()) {
+  if(auto button = input->cast<velvet::Node::Button>()) {
     button->setValue(0);
     if(auto instance = button->attribute<shared_pointer<InputButton>>("instance")) {
       if(allow) button->setValue(instance->value());
     }
   }
 
-  if(auto axis = input->cast<ares::Node::Axis>()) {
+  if(auto axis = input->cast<velvet::Node::Axis>()) {
     axis->setValue(0);
     if(auto instance = axis->attribute<shared_pointer<InputAxis>>("instance")) {
       if(allow) axis->setValue(instance->value());
